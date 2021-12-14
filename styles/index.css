@@ -1,1 +1,196 @@
-html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:RobotoDraft,sans-serif}#output{position:absolute;left:0;top:0;right:0;bottom:112px;z-index:0;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-align-items:center;-ms-flex-align:center;align-items:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center}#output.virtualkeyboard{-webkit-justify-content:flex-start;-ms-flex-pack:start;justify-content:flex-start}#output.virtualkeyboard #canvas-container{-webkit-transform-origin:50% 0%;transform-origin:50% 0%}#input-proxy-container{position:absolute;left:0;top:-10000px;right:0;bottom:0;z-index:1}#input-proxy{position:absolute;left:0;top:0;width:100%;height:100%;bottom:0;background:0;border:0;opacity:0;margin:0;padding:0}#canvas-container{pointer-events:none;position:relative;-webkit-flex:0 0 auto;-ms-flex:0 0 auto;flex:0 0 auto}paper-button::shadow div{font-size:14px;font-weight:500}#cursor{position:absolute;width:2px;background-color:#888;margin-left:2px;-webkit-animation:cursor-blink .5s;animation:cursor-blink .5s;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite;-webkit-animation-direction:alternate;animation-direction:alternate}.theme-midgray #cursor,.theme-darkgray #cursor,.theme-midyellow #cursor,.theme-darkyellow #cursor,.theme-midblue #cursor,.theme-darkblue #cursor,.theme-midred #cursor,.theme-darkred #cursor,.theme-midteal #cursor,.theme-darkteal #cursor{background-color:rgba(255,255,255,.8)}@-webkit-keyframes cursor-blink{to{opacity:.2}}@keyframes cursor-blink{to{opacity:.2}}#toolbox{position:absolute;bottom:24px;width:200px;left:50%;margin-left:-100px;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-align-items:center;-ms-flex-align:center;align-items:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;z-index:2}@media only screen and (max-width:480px){#toolbox{bottom:16px}}#hash{position:absolute;bottom:24px;line-height:56px;left:24px;text-decoration:none;color:#424242;font-weight:500;text-align:center;z-index:2}@media only screen and (max-width:480px){#hash{line-height:20px;bottom:80px;left:0;right:0}}.theme-midgray #hash,.theme-darkgray #hash,.theme-midyellow #hash,.theme-darkyellow #hash,.theme-midblue #hash,.theme-darkblue #hash,.theme-midred #hash,.theme-darkred #hash,.theme-midteal #hash,.theme-darkteal #hash{color:rgba(255,255,255,.8)}paper-fab{background-color:#02A8F3;color:#fff;margin:0 24px}@media only screen and (max-width:480px){paper-fab{margin:0 8px}}#theme-changer{cursor:pointer;position:relative;background-color:red;width:40px;height:40px;border-radius:50%;overflow:hidden;min-width:40px;margin:0}paper-icon-button{color:rgba(0,0,0,.5);width:24px;height:24px;border:1px solid rgba(0,0,0,.25);border-radius:50%}.theme-midgray paper-icon-button,.theme-darkgray paper-icon-button,.theme-midyellow paper-icon-button,.theme-darkyellow paper-icon-button,.theme-midblue paper-icon-button,.theme-darkblue paper-icon-button,.theme-midred paper-icon-button,.theme-darkred paper-icon-button,.theme-midteal paper-icon-button,.theme-darkteal paper-icon-button{color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.5)}paper-dialog::shadow h1{font-size:18px;margin-bottom:16px}paper-dialog.before-show{display:none}paper-progress{width:240px}paper-progress::shadow #progressContainer{background-color:#DDD}paper-progress::shadow #activeProgress{background-color:#424242}#accept-download-button{background-color:#424242;color:#fff}.theme-blue paper-progress::shadow #activeProgress,.theme-blue #accept-download-button,.theme-midblue paper-progress::shadow #activeProgress,.theme-midblue #accept-download-button,.theme-darkblue paper-progress::shadow #activeProgress,.theme-darkblue #accept-download-button{background-color:#02A8F3}.theme-red paper-progress::shadow #activeProgress,.theme-red #accept-download-button,.theme-midred paper-progress::shadow #activeProgress,.theme-midred #accept-download-button,.theme-darkred paper-progress::shadow #activeProgress,.theme-darkred #accept-download-button{background-color:#DB4437}.theme-yellow paper-progress::shadow #activeProgress,.theme-yellow #accept-download-button,.theme-midyellow paper-progress::shadow #activeProgress,.theme-midyellow #accept-download-button,.theme-darkyellow paper-progress::shadow #activeProgress,.theme-darkyellow #accept-download-button{background-color:#F4B400}.theme-teal paper-progress::shadow #activeProgress,.theme-teal #accept-download-button,.theme-midteal paper-progress::shadow #activeProgress,.theme-midteal #accept-download-button,.theme-darkteal paper-progress::shadow #activeProgress,.theme-darkteal #accept-download-button{background-color:#009688}
+/*
+ * Copyright 2014 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/* Media query mixins */
+/* Core layout */
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-family: RobotoDraft, sans-serif; }
+
+#output {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 112px;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; }
+  #output.virtualkeyboard {
+    justify-content: flex-start; }
+    #output.virtualkeyboard #canvas-container {
+      transform-origin: 50% 0%; }
+
+/* can't bottom: 0 a textarea for some reason */
+#input-proxy-container {
+  position: absolute;
+  left: 0;
+  top: -10000px;
+  right: 0;
+  bottom: 0;
+  z-index: 1; }
+
+#input-proxy {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  background: 0;
+  border: 0;
+  opacity: 0;
+  margin: 0;
+  padding: 0; }
+
+#canvas-container {
+  pointer-events: none;
+  position: relative;
+  flex: 0 0 auto; }
+
+paper-button::shadow div {
+  font-size: 14px;
+  font-weight: 500; }
+
+#cursor {
+  position: absolute;
+  width: 2px;
+  background-color: #888;
+  margin-left: 2px;
+  animation: cursor-blink 0.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate; }
+  .theme-midgray #cursor, .theme-darkgray #cursor, .theme-midyellow #cursor, .theme-darkyellow #cursor, .theme-midblue #cursor, .theme-darkblue #cursor, .theme-midred #cursor, .theme-darkred #cursor, .theme-midteal #cursor, .theme-darkteal #cursor {
+    background-color: rgba(255, 255, 255, 0.8); }
+
+@keyframes cursor-blink {
+  to {
+    opacity: 0.2; } }
+/* Toolbox and bottom stuff */
+#toolbox {
+  position: absolute;
+  bottom: 24px;
+  width: 200px;
+  left: 50%;
+  margin-left: -100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  z-index: 2; }
+  @media only screen and (max-width: 480px) {
+    #toolbox {
+      bottom: 16px; } }
+
+#hash {
+  position: absolute;
+  bottom: 24px;
+  line-height: 56px;
+  left: 24px;
+  text-decoration: none;
+  color: #424242;
+  font-weight: 500;
+  text-align: center;
+  z-index: 2; }
+  @media only screen and (max-width: 480px) {
+    #hash {
+      line-height: 20px;
+      bottom: 80px;
+      left: 0;
+      right: 0; } }
+  .theme-midgray #hash, .theme-darkgray #hash, .theme-midyellow #hash, .theme-darkyellow #hash, .theme-midblue #hash, .theme-darkblue #hash, .theme-midred #hash, .theme-darkred #hash, .theme-midteal #hash, .theme-darkteal #hash {
+    color: rgba(255, 255, 255, 0.8); }
+
+paper-fab {
+  background-color: #02A8F3;
+  color: white;
+  margin: 0 24px; }
+  @media only screen and (max-width: 480px) {
+    paper-fab {
+      margin: 0 8px; } }
+
+#theme-changer {
+  cursor: pointer;
+  position: relative;
+  background-color: red;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  min-width: 40px;
+  margin: 0; }
+
+paper-icon-button {
+  color: rgba(0, 0, 0, 0.5);
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 50%; }
+  .theme-midgray paper-icon-button, .theme-darkgray paper-icon-button, .theme-midyellow paper-icon-button, .theme-darkyellow paper-icon-button, .theme-midblue paper-icon-button, .theme-darkblue paper-icon-button, .theme-midred paper-icon-button, .theme-darkred paper-icon-button, .theme-midteal paper-icon-button, .theme-darkteal paper-icon-button {
+    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.5); }
+
+/* Dialog */
+paper-dialog::shadow h1 {
+  font-size: 18px;
+  margin-bottom: 16px; }
+paper-dialog.before-show {
+  display: none; }
+
+paper-progress {
+  width: 240px; }
+  paper-progress::shadow #progressContainer {
+    background-color: #DDD; }
+  paper-progress::shadow #activeProgress {
+    background-color: #424242; }
+
+#accept-download-button {
+  background-color: #424242;
+  color: #fff; }
+
+.theme-blue paper-progress::shadow #activeProgress, .theme-blue #accept-download-button,
+.theme-midblue paper-progress::shadow #activeProgress,
+.theme-midblue #accept-download-button,
+.theme-darkblue paper-progress::shadow #activeProgress,
+.theme-darkblue #accept-download-button {
+  background-color: #02A8F3; }
+
+.theme-red paper-progress::shadow #activeProgress, .theme-red #accept-download-button,
+.theme-midred paper-progress::shadow #activeProgress,
+.theme-midred #accept-download-button,
+.theme-darkred paper-progress::shadow #activeProgress,
+.theme-darkred #accept-download-button {
+  background-color: #DB4437; }
+
+.theme-yellow paper-progress::shadow #activeProgress, .theme-yellow #accept-download-button,
+.theme-midyellow paper-progress::shadow #activeProgress,
+.theme-midyellow #accept-download-button,
+.theme-darkyellow paper-progress::shadow #activeProgress,
+.theme-darkyellow #accept-download-button {
+  background-color: #F4B400; }
+
+.theme-teal paper-progress::shadow #activeProgress, .theme-teal #accept-download-button,
+.theme-midteal paper-progress::shadow #activeProgress,
+.theme-midteal #accept-download-button,
+.theme-darkteal paper-progress::shadow #activeProgress,
+.theme-darkteal #accept-download-button {
+  background-color: #009688; }
+
+/*# sourceMappingURL=index.css.map */
