@@ -285,9 +285,6 @@
     var canvas = instance.getCanvas();
     var ctx = canvas.getContext('2d');
 
-    // grow the canvas to fit branding
-    canvas.height += (36 /* spacing */ + 18 /* line height */) / scaleInv;
-
     var end = instance.getEndTime();
     var frameIndex = 0;
     var t = 0;
@@ -304,12 +301,6 @@
 
       instance.setTime(t);
       instance.draw();
-
-      // draw branding
-      var whiteText = g_theme.name.match(/dark/) || g_theme.name.match(/mid/);
-      ctx.fillStyle = whiteText ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.25)';
-      ctx.font = '500 ' + (18 / scaleInv) + 'px RobotoDraft';
-      ctx.fillText('#FORMSF14', padding, canvas.height - padding);
 
       var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
